@@ -11,7 +11,7 @@ function removeInitialSlashes(str) {
 // separate the setup/config object from the `md.use(...)` call for code clarity:
 const defaultSetup = {
   pluginId: 'wikilink',
-  replacer: function wikilinksReplacer(match, setup, options, env, tokens, id) {
+  replacer: function wikilinksReplacer(match, setup, options, env, tokens, id, md_options) {
     let label = '';
     let pageName = '';
     let href = '';
@@ -53,14 +53,17 @@ const defaultSetup = {
       htmlAttrs.push(`${attrName}="${setup.encodeHtmlAttr(attrValue)}"`);
     }
 
-    return this.renderLink({
+    const info = {
       pageName,
       label,
       originalPageName,
       originalLabel,
       href,
       htmlAttrs
-    }, setup, options, env, tokens, id);
+    };
+    // and augment the parse token too:
+    tokens[id].__wikilinksInfo = info;
+    return this.renderLink(info, setup, options, env, tokens, id);
 
     // - showcase using the `options` passed in via `MarkdownIt.use()`
     // - showcase using the `setup` object
