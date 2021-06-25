@@ -1,4 +1,4 @@
-/*! markdown-it-wikilinks 1.1.1-11 https://github.com//GerHobbelt/markdown-it-wikilinks @license MIT */
+/*! markdown-it-wikilinks 1.1.1-12 https://github.com//GerHobbelt/markdown-it-wikilinks @license MIT */
 
 import createPlugin from '@gerhobbelt/markdown-it-regexp';
 import sanitize from 'sanitize-filename';
@@ -10,7 +10,7 @@ function removeInitialSlashes(str) {
 
 const defaultSetup = {
   pluginId: 'wikilink',
-  replacer: function wikilinksReplacer(match, setup, options, env, tokens, id) {
+  replacer: function wikilinksReplacer(match, setup, options, env, tokens, id, md_options) {
     let label = '';
     let pageName = '';
     let href = '';
@@ -54,14 +54,17 @@ const defaultSetup = {
       htmlAttrs.push(`${attrName}="${setup.encodeHtmlAttr(attrValue)}"`);
     }
 
-    return this.renderLink({
+    const info = {
       pageName,
       label,
       originalPageName,
       originalLabel,
       href,
       htmlAttrs
-    }, setup, options, env, tokens, id); // - showcase using the `options` passed in via `MarkdownIt.use()`
+    }; // and augment the parse token too:
+
+    tokens[id].__wikilinksInfo = info;
+    return this.renderLink(info, setup, options, env, tokens, id); // - showcase using the `options` passed in via `MarkdownIt.use()`
     // - showcase using the `setup` object
     // - showcase using the `tokens` stream + `id` index to access the token
     // return '\n' + setup.pluginId + ':' + options.opt1 + ':' + setup.escape(url) + ':' + options.opt2 + ':' + (token.wonko || '---') + ':' + token.type + ':' + token.nesting + ':' + token.level;
@@ -74,7 +77,7 @@ const defaultSetup = {
     const defaults = {
       linkPattern: /\[\[([^\x00-\x1f|]+?)(\|([\s\S]+?))?\]\]/,
       // accept anything, except control characters (CR, LF, etc) or |
-      // linkPattern: /\[\[([-\w\s\/]+)(\|([-\w\s\/]+))?\]\]/,          // accept words, dashes and whitespace
+      // linkPattern: /\[\[([-.\w\s\/]+)(\|([-.\w\s\/]+))?\]\]/,          // accept words, dashes, dots and whitespace
       baseURL: '/',
       relativeBaseURL: './',
       makeAllLinksAbsolute: false,
