@@ -290,4 +290,6 @@ assert.strictEqual(
 
 ## Credits
 
-Based on [markdown-it-ins](https://github.com/markdown-it/markdown-it-ins) by Vitaly Puzrin, Alex Kocharin.
+Based on the original [markdown-it-wikilinks](https://github.com/jsepia/markdown-it-wikilinks).
+
+Which is based on [markdown-it-ins](https://github.com/markdown-it/markdown-it-ins) by Vitaly Puzrin, Alex Kocharin.

@@ -75,7 +75,7 @@ const defaultSetup = {
   setup: function wikilinksSetup(config, options) {
     const defaults = {
       linkPattern: /\[\[([^\x00-\x1f|]+?)(\|([\s\S]+?))?\]\]/,          // accept anything, except control characters (CR, LF, etc) or |
-      // linkPattern: /\[\[([-\w\s\/]+)(\|([-\w\s\/]+))?\]\]/,          // accept words, dashes and whitespace
+      // linkPattern: /\[\[([-.\w\s\/]+)(\|([-.\w\s\/]+))?\]\]/,          // accept words, dashes, dots and whitespace
 
       baseURL: '/',
       relativeBaseURL: './',
